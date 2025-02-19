@@ -1,0 +1,25 @@
+#!/bin/bash
+#BATCH --job-name=NACL_Tut      ## job name
+#SBATCH --account ANDRICIO_LAB     ## account to charge
+#SBATCH -p standard          ## partition/queue name
+#SBATCH --nodes=1            ## (-N) number of nodes to use
+#SBATCH --cpus-per-task=48    ## number of cores the job needs
+#SBATCH -t 120:00:00
+#SBATCH --mem=8gb
+#SBATCH --error=slurm-%J.err ## error log file
+#SBATCH --mail-user=prprabha@uci.edu
+#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
+
+# Run the weighted ensemble simulation. Make sure you ran init.sh first!
+
+
+# Make sure environment is set
+source env.sh
+
+# Clean up
+rm -f west.log
+
+# Run w_run
+w_run --n-workers 1 --work-manager processes "$@" &> west.log
+

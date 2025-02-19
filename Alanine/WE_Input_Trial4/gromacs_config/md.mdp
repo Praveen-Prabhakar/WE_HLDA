@@ -1,0 +1,40 @@
+; md-continue.mdp
+;   0.5 ps NVT production with Langevin thermostat
+;#################################### INPUT ;####################################
+ld_seed     = RAND      ; Use random seed from WESTPA
+;################################# INTEGRATOR ;##################################
+integrator  = sd        ; Langevin thermostat
+dt          = 0.002     ; Timestep (ps)
+nsteps      = 1000       ; Simulation duration (timesteps)
+nstcomm     = 250       ; Center of mass motion removal interval
+comm_mode   = linear    ; Center of mass motion removal mode
+
+;################################## ENSEMBLE ;###################################
+ref_t       = 600       ; System temperature (K)
+tau_t       = 0.2       ; Thermostat time constant (ps)
+tc_grps     = system    ; Apply thermostat to complete system
+;########################### NONBONDED INTERACTIONS ;############################
+cutoff_scheme = verlet   ; Method of managing neighbor lists
+pbc           = xyz      ; Periodic boundary conditions disabled
+; electrostatic
+rcoulomb            = 1.0
+coulombtype         = Cut-off
+;
+; vdw
+vdw-type            = Cut-off
+rvdw                = 1.0
+;
+; constraints
+constraints              = h-bonds
+constraint-algorithm     = lincs
+lincs_iter               = 4
+
+;nstlist       = 0       ; Do not update neighbor list
+periodic_molecules  = no
+;################################### OUTPUT ;####################################
+nstlog        =1000      ; Log output interval (timesteps)
+nstenergy     =1000      ; Energy output interval (timesteps)
+nstcalcenergy =1000      ; Energy calculation interval (timesteps)
+nstxout       =1000      ; Trajectory output interval (timesteps)
+nstvout       =1000      ; Velocity outout interval (timesteps)
+nstfout       =1000      ; Force output interval (timesteps)
